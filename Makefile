@@ -16,7 +16,7 @@ release: clean
 		-a -tags netgo \
 		-ldflags "-X main.Version=$(VERSION)" \
 		-o bin/$(TARGET) .
-	docker build -t gettyimages/$(TARGET):$(VERSION) .
+# 	docker build -t gettyimages/$(TARGET):$(VERSION) .
 
 publish: release
 	docker push gettyimages/$(TARGET):$(VERSION)
