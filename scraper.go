@@ -12,10 +12,15 @@ import (
 
 type Scraper interface {
 	Scrape(path string) ([]byte, error)
+	URL() *url.URL
 }
 
 type scraper struct {
 	uri *url.URL
+}
+
+func (s *scraper) URL() *url.URL {
+	return s.uri
 }
 
 func (s *scraper) Scrape(path string) ([]byte, error) {
