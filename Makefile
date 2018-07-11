@@ -27,5 +27,5 @@ clean:
 	rm -rf bin/
 
 docker: release
-	docker build -t registry.banno-internal.com/marathon_exporter:banno-1.0.4 .
-	docker push registry.banno-internal.com/marathon_exporter:banno-1.0.4
+	docker build -t registry.banno-internal.com/marathon_exporter:banno-1.0.5-SNAPSHOT .
+	docker push registry.banno-internal.com/marathon_exporter:banno-1.0.5-SNAPSHOT
