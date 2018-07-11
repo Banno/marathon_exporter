@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/matt-deboer/go-marathon"
 	"github.com/prometheus/client_golang/prometheus"
@@ -65,7 +66,7 @@ func marathonConnect(uri *url.URL) error {
 		},
 	}
 
-	log.Debugln("Connecting to Marathon")
+	log.Debugf("Connecting to Marathon: %s | username=%s | len(password)=%d", stripAuthority(uri), user, utf8.RuneCountInString(pass))
 	client, err := marathon.NewClient(config)
 	if err != nil {
 		return err
@@ -78,6 +79,14 @@ func marathonConnect(uri *url.URL) error {
 
 	log.Debugf("Connected to Marathon! Name=%s, Version=%s\n", info.Name, info.Version)
 	return nil
+}
+
+func stripAuthority(u *url.URL) string {
+	_, passSet := u.User.Password()
+	if passSet {
+		return strings.Replace(u.String(), u.User.String()+"@", "", 1)
+	}
+	return u.String()
 }
 
 func main() {

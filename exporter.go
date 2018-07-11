@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net/url"
 	"sort"
 	"strings"
 	"time"
@@ -169,6 +170,13 @@ func (e *Exporter) scrapeApps(json *gabs.Container, ch chan<- prometheus.Metric)
 		grabbedLabels = append(grabbedLabels, label{
 			key:   "app_version",
 			value: version,
+		})
+		// Add an 'app_url' label which is a FQDN that loads marathon's details page
+		// for the given app. Useful to add on alerts.
+		appUrl := strings.TrimSuffix(stripAuthority(e.scraper.URL()), "/") + "/ui/#/apps/"
+		grabbedLabels = append(grabbedLabels, label{
+			key:   "app_url",
+			value: appUrl + url.PathEscape(id),
 		})
 		sortLabels(grabbedLabels)
 
